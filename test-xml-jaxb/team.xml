@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FootballteamList>
+    <list>
+        <city>Madrid</city>
+        <name>Real Madrid</name>
+        <titels>
+            <titelCounter>32</titelCounter>
+            <titleName>Champions</titleName>
+            <verband>
+                <manager>Uli Hoeness</manager>
+                <name>DFB</name>
+            </verband>
+        </titels>
+        <titels>
+            <titelCounter>10</titelCounter>
+            <titleName>CL</titleName>
+            <verband>
+                <manager>Uli Hoeness</manager>
+                <name>DFB</name>
+            </verband>
+        </titels>
+        <trainerName>Carlo Anchelloti</trainerName>
+    </list>
+</FootballteamList>
