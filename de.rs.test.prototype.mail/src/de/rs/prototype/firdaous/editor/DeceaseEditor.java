@@ -1,6 +1,7 @@
 package de.rs.prototype.firdaous.editor;
 
 import org.eclipse.core.databinding.DataBindingContext;
+
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -28,8 +29,9 @@ import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import de.rs.prototype.firdaous.model.PresentationWorkOrder;
-import de.rs.prototype.firdaous.model.WorkOrder;
+import de.rs.firdaous.model.PresentationWorkOrder;
+
+
 
 
 

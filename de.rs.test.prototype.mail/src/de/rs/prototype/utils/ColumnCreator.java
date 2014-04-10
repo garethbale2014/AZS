@@ -2,14 +2,18 @@ package de.rs.prototype.utils;
 
 import java.text.SimpleDateFormat;
 
+
+
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 
+
+
 import de.rs.auxiliary.FormatUtil;
-import de.rs.prototype.firdaous.model.WorkOrder;
+import de.rs.firdaous.model.WorkOrder;
 
 public class ColumnCreator {
 	
@@ -26,10 +30,9 @@ public class ColumnCreator {
 					
 					@Override
 					public void update(ViewerCell cell) {
-						WorkOrder order = (WorkOrder)cell.getElement();
+					  WorkOrder order = (WorkOrder)cell.getElement();
 						String v = ColumnConstants.RowViewerColumns[cell.getColumnIndex()];
-						if("Auftrag Nr".equals(v)){
-							
+						if("Auftrag Nr".equals(v)){							
 							cell.setText(String.valueOf(order.getProjectId()));
 						}
 						
@@ -38,8 +41,8 @@ public class ColumnCreator {
 							cell.setText(dateStr);
 						}
 						else if("Vorname".equals(v)){
-							
 							cell.setText(order.getPair().getPerson().getFirstname());
+							//cell.setText(order.getPair().getPerson().getFirstname());
 						}
 						else if("Nachname".equals(v)){
 							
@@ -65,14 +68,36 @@ public class ColumnCreator {
 							
 							cell.setText(order.getPerson().getAddresse().toString());
 						}
-						else if("Partner Adresse".equals(v)){
+						else if("P.Adresse".equals(v)){
 							
 							cell.setText(order.getPair().getPartner().getAddresse().toString());
 						}
-						else if("Partner Vorname".equals(v)){
+						else if("P.Name".equals(v)){
 							
-							cell.setText(order.getPair().getPartner().getFirstname());
-						}
+							cell.setText(order.getPair().getPartner().getLastname());
+						} else if("P.Vorname".equals(v)){
+              
+              cell.setText(order.getPair().getPartner().getFirstname());
+            }
+						else if("P.Geburtsdatum".equals(v)){
+						  String dateStr = FormatUtil.toDateString(order.getPair().getPartner().getBirthday(), new SimpleDateFormat("dd-MM-yyyy"));
+              cell.setText(dateStr);
+             
+            }
+						 else if("P.Geburtsort".equals(v)){	              
+	              cell.setText(order.getPair().getPartner().getBirthCity());
+	            }
+						else if("Sterbedatum".equals(v)){              
+						  String dateStr = FormatUtil.toDateString(order.getPair().getPartner().getDecedDay(), new SimpleDateFormat("dd-MM-yyyy"));
+              cell.setText(dateStr);
+            }
+						else if("Antragsteller(in)".equals(v)){                
+              cell.setText(order.getEntrySupplier().getFirstname());
+            }
+						else if("Auftraggeber(in)".equals(v)){                
+              cell.setText(order.getEntrySupplier().getLastname());
+            }
+						
 							
 //						} else
 //						

@@ -1,28 +1,24 @@
 package de.rs.test.prototype.mail;
 
 import java.io.IOException;
-import java.util.Calendar;
+
+
+
 
 import javax.xml.bind.JAXBException;
 
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import de.rs.firdaous.xml.service.IXMLService;
-import de.rs.firdaous.xml.service.ProjectList;
-import de.rs.firdaous.xml.service.XMLService;
-import de.rs.prototype.firdaous.model.Address;
-import de.rs.prototype.firdaous.model.Clinic;
-import de.rs.prototype.firdaous.model.Country;
-import de.rs.prototype.firdaous.model.FamillyState;
-import de.rs.prototype.firdaous.model.Pair;
-import de.rs.prototype.firdaous.model.PersonData;
-import de.rs.prototype.firdaous.model.PhoneNumber;
-import de.rs.prototype.firdaous.model.Police;
-import de.rs.prototype.firdaous.model.PresentationWorkOrder;
-import de.rs.prototype.firdaous.model.WorkOrder;
+import de.rs.firdaous.model.PresentationWorkOrder;
+import de.rs.firdaous.model.WorkOrder;
+import de.rs.firdaous.services.IWorkOrderService;
+import de.rs.firdaous.services.WorkOrderService;
+import de.rs.firdaous.services.DocumentService;
+import de.rs.firdaous.services.IDocumentService;
+import de.rs.firdaous.xml.services.*;
+
 
 /**
  * The activator class controls the plug-in life cycle
@@ -37,8 +33,10 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
+
+  private IXMLService xmlService = XMLService.getxmlService();
 	
-	IXMLService xmlService = XMLService.getxmlService();
+	
 	/**
 	 * The constructor
 	 */
@@ -51,7 +49,10 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		context.registerService(IWorkOrderService.class.getName(), new WorkOrderService(), null);
+		context.registerService(IDocumentService.class.getName(), new DocumentService(), null);
 		plugin = this;
+		
 		//bindingContext = new DataBindingContext();
 		initData();
 	}

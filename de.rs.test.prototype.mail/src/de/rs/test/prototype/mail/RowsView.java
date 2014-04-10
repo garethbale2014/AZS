@@ -1,42 +1,38 @@
 package de.rs.test.prototype.mail;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeanProperties;
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.core.databinding.observable.map.IObservableMap;
-import org.eclipse.core.databinding.observable.set.IObservableSet;
-import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
-import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
-import org.eclipse.jface.databinding.viewers.ViewerSupport;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.IHandlerService;
-import org.eclipse.ui.part.ViewPart;
 
+import de.ralfebert.rcputils.concurrent.UIProcess;
+import de.ralfebert.rcputils.menus.ContextMenu;
+import de.ralfebert.rcputils.wired.WiredViewPart;
+import de.rs.firdaous.model.WorkOrder;
+import de.rs.firdaous.services.IAddressChangeListener;
+import de.rs.firdaous.services.IDocumentService;
+import de.rs.firdaous.services.IWorkOrderService;
 import de.rs.prototype.firdaous.editor.BrowserComponent;
 import de.rs.prototype.firdaous.handler.CallEditor;
-import de.rs.prototype.firdaous.model.PresentationWorkOrder;
-import de.rs.prototype.firdaous.model.WorkOrder;
-import de.rs.prototype.utils.ColumnCreator;
+import de.rs.prototype.utils.AddressBookMessages;
 import de.rs.prototype.utils.ColumnConstants;
-import de.rs.prototype.utils.GenericObservableMapLabelProvider;
+import de.rs.prototype.utils.ColumnCreator;
 
-public class RowsView extends ViewPart {
+public class RowsView extends WiredViewPart {
 
 	public static final String ID = "de.rs.test.prototype.mail.RowsView";
 
@@ -46,7 +42,45 @@ public class RowsView extends ViewPart {
 
 	private DataBindingContext bindingContext;
 	
+	private IWorkOrderService addressService;
 	
+	private IDocumentService documentService;
+
+  private IAddressChangeListener addressChangeListener  = new IAddressChangeListener() {
+
+    public void addressesChanged() {
+      refresh();
+    }
+
+  };
+	
+	public class LoadAddressesJob extends UIProcess {
+
+  private List<WorkOrder> addresses;
+  
+  
+
+  
+
+    public LoadAddressesJob(Display display) {
+      super(display, AddressBookMessages.LoadAddresses);
+    }
+
+    @Override
+    protected void runInBackground(IProgressMonitor monitor) {
+      addresses = (addressService != null) ? addressService.getAllWorkOrder() : Collections.<WorkOrder> emptyList();
+    }
+
+    @Override
+    protected void runInUIThread() {
+      if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
+        tableViewer.setInput(addresses);
+        // WORKAROUND: Unnecessary horizontal scrollbar
+        // See https://bugs.eclipse.org/bugs/show_bug.cgi?id=304128
+        tableViewer.getTable().getParent().layout();
+      }
+    }
+  }
 
 	
 
@@ -64,15 +98,16 @@ public class RowsView extends ViewPart {
 		tableViewer.getTable().setHeaderVisible(true);
 
 		List<WorkOrder> ordersList = new ArrayList<WorkOrder>();
-		for (Entry<Long, WorkOrder> entry : PresentationWorkOrder.getInstance().getOrders().entrySet()) {
-			ordersList.add(entry.getValue());
-		}
+//		for (Entry<Long, WorkOrder> entry : PresentationWorkOrder.getInstance().getOrders().entrySet()) {
+//			ordersList.add(entry.getValue());
+//		}
 		
 		//"Nationalität", "Adresse", "Adresse"
 		
-		input = new WritableList(ordersList, WorkOrder.class);
+		//input = new WritableList(ordersList, Address.class);
 		tableViewer.setContentProvider(new ArrayContentProvider());
-		tableViewer.setInput(ordersList);
+		//tableViewer.setInput();
+		new LoadAddressesJob(tableViewer.getTable().getDisplay()).schedule();
 		
 //		ViewerSupport.bind(tableViewer, input,
 //				PojoProperties.values(new String[] { "projectId", "workOrderDate", "person.firstname", "person.lastname", "person.birthday", "person.decedDay",
@@ -86,7 +121,10 @@ public class RowsView extends ViewPart {
 		hookDoubleClickCommand();
 		BrowserComponent.getInstance().setRowView(this);
 		
-		
+		ContextMenu menu = new ContextMenu(tableViewer, getSite());
+		menu.setDefaultItemHandling(true);
+		refresh();
+
 
 	}
 
@@ -103,7 +141,45 @@ public class RowsView extends ViewPart {
 			}
 		});
 	}
+	
+	@Override
+	public void init(IViewSite site) throws PartInitException {
+	  // TODO Auto-generated method stub
+	  super.init(site);
+	}
 
+	@InjectService
+  public void bindAddressService(IWorkOrderService addressService) {
+    this.addressService = addressService;
+    // Register for update events to refresh the view contents automatically
+    addressService.addAddressChangeListener(addressChangeListener);
+    refresh();
+  }
+	
+//	@InjectService
+//	public void bindDocumentService(IDocumentService documentService){
+//	  this.documentService = documentService;
+//	}
+	
+	
+	public void unbindAddressService(IDocumentService documentService) {
+    this.documentService = null;
+    // Remove the change listener because otherwise the address service
+    // would call the view object even when this view is already gone
+    //addressService.removeAddressChangeListener(addressChangeListener);
+   // refresh();
+  }
+	
+
+  public void unbindAddressService(IWorkOrderService addressService) {
+    this.addressService = null;
+    // Remove the change listener because otherwise the address service
+    // would call the view object even when this view is already gone
+    addressService.removeAddressChangeListener(addressChangeListener);
+    refresh();
+  }
+	
+	
 	@Override
 	public void setFocus() {
 
@@ -119,5 +195,11 @@ public class RowsView extends ViewPart {
 	public void setTableViewer(TableViewer tableViewer) {
 		this.tableViewer = tableViewer;
 	}
+	
+	public void refresh() {
+    if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
+      new LoadAddressesJob(tableViewer.getTable().getDisplay()).schedule();
+    }
+  }
 
 }

@@ -1,6 +1,7 @@
 package de.rs.prototype.firdaous.handler;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,10 +16,10 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.rs.firdaous.model.PresentationWorkOrder;
+import de.rs.firdaous.model.WorkOrder;
 import de.rs.prototype.firdaous.editor.WorkOrderEditor;
 import de.rs.prototype.firdaous.editor.WorkOrderEditorInput;
-import de.rs.prototype.firdaous.model.PresentationWorkOrder;
-import de.rs.prototype.firdaous.model.WorkOrder;
 import de.rs.test.prototype.mail.RowsView;
 
 public class CallEditor extends AbstractHandler {
@@ -29,15 +30,14 @@ public class CallEditor extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		System.out.println("called");
-		// get the view
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 
-		IWorkbenchPage page = window.getActivePage();
-		
-
-		RowsView view = (RowsView) page.findView(RowsView.ID);
 		// get the selection
-		ISelection selection = view.getSite().getSelectionProvider().getSelection();
+		
+		
+		ISelection selection = HandlerUtil.getCurrentSelection(event);
+		IWorkbenchPage activePage = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+		
+		
 		if (selection != null && selection instanceof IStructuredSelection) {
 			Object obj = ((IStructuredSelection) selection).getFirstElement();
 			// // if we had a selection lets open the editor
@@ -62,7 +62,7 @@ public class CallEditor extends AbstractHandler {
 
 			try {
 
-				page.openEditor(input, WorkOrderEditor.ID);
+			  activePage.openEditor(input, WorkOrderEditor.ID);
 
 			} catch (PartInitException e) {
 				throw new RuntimeException(e);

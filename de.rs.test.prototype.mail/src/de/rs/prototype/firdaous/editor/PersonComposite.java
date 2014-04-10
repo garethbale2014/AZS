@@ -1,6 +1,7 @@
 package de.rs.prototype.firdaous.editor;
 
 import org.eclipse.core.databinding.DataBindingContext;
+
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
@@ -16,8 +17,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import de.rs.prototype.firdaous.model.PersonData;
-import de.rs.prototype.firdaous.model.WorkOrder;
+import de.rs.firdaous.model.PersonData;
+import de.rs.firdaous.model.WorkOrder;
+
 
 public class PersonComposite extends EditorComposite {
 	

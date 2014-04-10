@@ -1,6 +1,7 @@
 package de.rs.prototype.firdaous.editor;
 
 import java.io.IOException;
+
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -19,9 +20,9 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.EditorPart;
 
-import de.rs.firdaous.xml.service.XMLService;
-import de.rs.prototype.firdaous.model.PresentationWorkOrder;
-import de.rs.prototype.firdaous.model.WorkOrder;
+import de.rs.firdaous.model.PresentationWorkOrder;
+import de.rs.firdaous.model.WorkOrder;
+import de.rs.firdaous.xml.services.XMLService;
 import de.rs.test.prototype.mail.Activator;
 
 public class PersonEditor extends EditorPart {

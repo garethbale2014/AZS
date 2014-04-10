@@ -2,8 +2,11 @@ package de.rs.prototype.firdaous.editor;
 
 import org.eclipse.core.databinding.DataBindingContext;
 
-import de.rs.prototype.firdaous.model.PresentationWorkOrder;
-import de.rs.prototype.firdaous.model.WorkOrder;
+import de.rs.firdaous.model.PresentationWorkOrder;
+import de.rs.firdaous.model.WorkOrder;
+
+
+
 
 public abstract class EditorComposite {
 

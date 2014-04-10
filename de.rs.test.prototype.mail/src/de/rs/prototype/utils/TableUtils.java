@@ -1,13 +1,14 @@
 package de.rs.prototype.utils;
 
 import org.eclipse.jface.viewers.ISelection;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 
-import de.rs.prototype.firdaous.model.PersonData;
-import de.rs.prototype.firdaous.model.PresentationWorkOrder;
-import de.rs.prototype.firdaous.model.WorkOrder;
+import de.rs.firdaous.model.PersonData;
+import de.rs.firdaous.model.PresentationWorkOrder;
+import de.rs.firdaous.model.WorkOrder;
 import de.rs.test.prototype.mail.RowsView;
 
 public class TableUtils {

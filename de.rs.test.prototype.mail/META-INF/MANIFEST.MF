@@ -27,7 +27,12 @@ Require-Bundle: org.eclipse.ui,
  org.junit,
  org.eclipse.emf.common;bundle-version="2.7.0",
  org.eclipse.emf.edit.ui;bundle-version="2.7.0",
- de.rs.commons.lang;bundle-version="1.0.0"
+ de.rs.commons.lang;bundle-version="1.0.0",
+ de.ralfebert.rcputils;bundle-version="2.0.2",
+ de.ralfebert.rcputils.wired;bundle-version="1.0.1",
+ org.eclipse.riena.core;bundle-version="6.0.0",
+ de.rs.firdaous.services;bundle-version="1.0.0",
+ de.rs.firdaous.entities;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,

@@ -2,7 +2,6 @@ package de.rs.test.prototype.mail;
 
 import java.util.ArrayList;
 
-
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,298 +25,321 @@ import de.rs.prototype.firdaous.handler.DataLoaderHandler;
 import de.rs.prototype.firdaous.handler.PersonEditorHandler;
 
 public class NavigationView extends ViewPart {
-	public static final String ID = "de.rs.test.prototype.mail.navigationView";
-	private TreeViewer viewer;
+  public static final String ID = "de.rs.test.prototype.mail.navigationView";
+  private TreeViewer viewer;
 
-	class TreeObject {
-		private String name;
-		private TreeParent parent;
+  class TreeObject {
+    private String name;
+    private TreeParent parent;
 
-		public TreeObject(String name) {
-			this.name = name;
-		}
+    public TreeObject(String name) {
+      this.name = name;
+    }
 
-		public String getName() {
-			return name;
-		}
+    public String getName() {
+      return name;
+    }
 
-		public void setParent(TreeParent parent) {
-			this.parent = parent;
-		}
+    public void setParent(TreeParent parent) {
+      this.parent = parent;
+    }
 
-		public TreeParent getParent() {
-			return parent;
-		}
+    public TreeParent getParent() {
+      return parent;
+    }
 
-		public String toString() {
-			return getName();
-		}
-	}
+    public String toString() {
+      return getName();
+    }
+  }
 
-	class TreeParent extends TreeObject {
-		private ArrayList children;
+  class TreeParent extends TreeObject {
+    private ArrayList children;
 
-		public TreeParent(String name) {
-			super(name);
-			children = new ArrayList();
-		}
+    public TreeParent(String name) {
+      super(name);
+      children = new ArrayList();
+    }
 
-		public void addChild(TreeObject child) {
-			children.add(child);
-			child.setParent(this);
-		}
+    public void addChild(TreeObject child) {
+      children.add(child);
+      child.setParent(this);
+    }
 
-		public void removeChild(TreeObject child) {
-			children.remove(child);
-			child.setParent(null);
-		}
+    public void removeChild(TreeObject child) {
+      children.remove(child);
+      child.setParent(null);
+    }
 
-		public TreeObject[] getChildren() {
-			return (TreeObject[]) children.toArray(new TreeObject[children.size()]);
-		}
+    public TreeObject[] getChildren() {
+      return (TreeObject[]) children.toArray(new TreeObject[children.size()]);
+    }
 
-		public boolean hasChildren() {
-			return children.size() > 0;
-		}
-	}
+    public boolean hasChildren() {
+      return children.size() > 0;
+    }
+  }
 
-	class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+  class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
+    public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+    }
 
-		public void dispose() {
-		}
+    public void dispose() {
+    }
 
-		public Object[] getElements(Object parent) {
-			return getChildren(parent);
-		}
+    public Object[] getElements(Object parent) {
+      return getChildren(parent);
+    }
 
-		public Object getParent(Object child) {
-			if (child instanceof TreeObject) {
-				return ((TreeObject) child).getParent();
-			}
-			return null;
-		}
+    public Object getParent(Object child) {
+      if (child instanceof TreeObject) {
+        return ((TreeObject) child).getParent();
+      }
+      return null;
+    }
 
-		public Object[] getChildren(Object parent) {
-			if (parent instanceof TreeParent) {
-				return ((TreeParent) parent).getChildren();
-			}
-			return new Object[0];
-		}
+    public Object[] getChildren(Object parent) {
+      if (parent instanceof TreeParent) {
+        return ((TreeParent) parent).getChildren();
+      }
+      return new Object[0];
+    }
 
-		public boolean hasChildren(Object parent) {
-			if (parent instanceof TreeParent)
-				return ((TreeParent) parent).hasChildren();
-			return false;
-		}
-	}
+    public boolean hasChildren(Object parent) {
+      if (parent instanceof TreeParent) return ((TreeParent) parent).hasChildren();
+      return false;
+    }
+  }
 
-	class ViewLabelProvider extends LabelProvider {
+  class ViewLabelProvider extends LabelProvider {
 
-		public String getText(Object obj) {
-			return obj.toString();
-		}
+    public String getText(Object obj) {
+      return obj.toString();
+    }
 
-		public Image getImage(Object obj) {
-			String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
-			if (obj instanceof TreeParent) {
-				if (String.valueOf(obj).equals("Behörden")) {
-					String userIcon = "icons/Hopstarter-Scrap-Library.ico";
-					return Activator.getImageDescriptor(userIcon).createImage();
-				} else if (String.valueOf(obj).equals("Sterbeurkunde Formulare")) {
-					String userIcon = "icons/Awicons-Vista-Artistic-Office-building.ico";
-					return Activator.getImageDescriptor(userIcon).createImage();
-				}
-				if (String.valueOf(obj).equals("Geplannte Features")) {
-					// String userIcon = "/icons/forms.ico";
-					return Activator.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK).createImage();
+    public Image getImage(Object obj) {
+      String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
+     // if (obj instanceof TreeParent) {
+        if (String.valueOf(obj).equals("Behörden")) {
+          String userIcon = "icons/Hopstarter-Scrap-Library.ico";
+          return Activator.getImageDescriptor(userIcon).createImage();
+        } else if (String.valueOf(obj).equals("Sterbeurkunde Formulare")) {
+          String userIcon = "icons/Awicons-Vista-Artistic-Office-building.ico";
+          return Activator.getImageDescriptor(userIcon).createImage();
+        }
+        if (String.valueOf(obj).equals("Geplannte Features")) {
+          // String userIcon = "/icons/forms.ico";
+          return Activator.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK).createImage();
 
-				}
-				if (String.valueOf(obj).equals("Personen Daten")) {
-					String userIcon = "icons/users.ico";
-					return Activator.getImageDescriptor(userIcon).createImage();
+        }
+        if (String.valueOf(obj).equals("Personen")) {
+          String userIcon = "icons/users.ico";
+          return Activator.getImageDescriptor(userIcon).createImage();
 
-				}
+        }
+        if (String.valueOf(obj).equals("Auftrag")) {
+          String userIcon = "icons/BestatterAuftrag_16_16.bmp";
+          return Activator.getImageDescriptor(userIcon).createImage();
 
-				imageKey = ISharedImages.IMG_OBJ_FOLDER;
-				return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
-			} else {
+        }
+        if (String.valueOf(obj).equals("Person anlegen")) {
+          String userIcon = "icons/add_user.ico";
+          return Activator.getImageDescriptor(userIcon).createImage();
+        }
 
-				if (String.valueOf(obj).equals("Standesamt Formular")) {
-					String userIcon = "icons/box_red.ico";
-					return Activator.getImageDescriptor(userIcon).createImage();
+//        imageKey = ISharedImages.IMG_OBJ_FOLDER;
+  //      return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
+     // }  else {
+      if (String.valueOf(obj).equals("Auftrag anlegen")) {
+        String userIcon = "icons/newBook.gif";
+        return Activator.getImageDescriptor(userIcon).createImage();
+      }
 
-				}
-				if (String.valueOf(obj).equals("Daten Bestand")) {
-					String userIcon = "icons/gameboard.gif";
-					return Activator.getImageDescriptor(userIcon).createImage();
+      if (String.valueOf(obj).equals("Standesamt Formular")) {
+        String userIcon = "icons/box_red.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-				}
-				
+      }
+      if (String.valueOf(obj).equals("Standesamt Formular")) {
+        String userIcon = "icons/box_red.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-				if (String.valueOf(obj).equals("Personen Ansicht")) {
-					String userIcon = "icons/users.ico";
-					return Activator.getImageDescriptor(userIcon).createImage();
+      }
+      if (String.valueOf(obj).equals("Auftrag") || String.valueOf(obj).equals("Auftrag anlegen")) {
+        String userIcon = "icons/gameboard.gif";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-				}
-				if (String.valueOf(obj).equals("Anlage zum Sterbefall")) {
-					String userIcon = "icons/attachment_48_48.ico";
-					return Activator.getImageDescriptor(userIcon).createImage();
+      }
 
-				} else if (String.valueOf(obj).equals("Bestattungsauftrag")) {
-					String userIcon = "icons/BestatterAuftrag.ico";
-					return Activator.getImageDescriptor(userIcon).createImage();
+      if (String.valueOf(obj).equals("Personen Ansicht")) {
+        String userIcon = "icons/users.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-				} else if (String.valueOf(obj).equals("Behörden")) {
-					String userIcon = "icons/Hopstarter-Scrap-Library.ico";
-					return Activator.getImageDescriptor(userIcon).createImage();
+      }
+      if (String.valueOf(obj).equals("Anlage zum Sterbefall")) {
+        String userIcon = "icons/attachment_48_48.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-				}
-			}
-			if (String.valueOf(obj).equals("Krankenhaus")) {
-				String userIcon = "icons/clinic.ico";
-				return Activator.getImageDescriptor(userIcon).createImage();
+      } else if (String.valueOf(obj).equals("Bestattungsauftrag")) {
+        String userIcon = "icons/BestatterAuftrag.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-			}
-			if (String.valueOf(obj).equals("Polizei")) {
-				String userIcon = "icons/police.ico";
-				return Activator.getImageDescriptor(userIcon).createImage();
+      } else if (String.valueOf(obj).equals("Behörden")) {
+        String userIcon = "icons/Hopstarter-Scrap-Library.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-			}
-			if (String.valueOf(obj).equals("Sozialamt")) {
-				String userIcon = "icons/gnome_applications_office.ico";
-				return Activator.getImageDescriptor(userIcon).createImage();
+      }
 
-			}
-			if (String.valueOf(obj).equals("Friedhöfe")) {
-				String userIcon = "icons/1392047579_cemetery.png";
-				return Activator.getImageDescriptor(userIcon).createImage();
+      if (String.valueOf(obj).equals("Krankenhaus")) {
+        String userIcon = "icons/clinic.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-			}
-			if (String.valueOf(obj).equals("BehördenFormulareImportieren")) {
-				String userIcon = "/icons/forms.ico";
-				return Activator.getImageDescriptor(userIcon).createImage();
+      }
+      if (String.valueOf(obj).equals("Polizei")) {
+        String userIcon = "icons/police.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-			}
+      }
+      if (String.valueOf(obj).equals("Sozialamt")) {
+        String userIcon = "icons/gnome_applications_office.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-			return null;
+      }
+      if (String.valueOf(obj).equals("Friedhöfe")) {
+        String userIcon = "icons/1392047579_cemetery.png";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-		}
-	}
+      }
+      if (String.valueOf(obj).equals("BehördenFormulareImportieren")) {
+        String userIcon = "/icons/forms.ico";
+        return Activator.getImageDescriptor(userIcon).createImage();
 
-	/**
-	 * We will set up a dummy model to initialize tree heararchy. In real code,
-	 * you will connect to a real model and expose its hierarchy.
-	 */
-	private TreeObject createDummyModel() {
+      
+      //}
+      }
 
-		TreeParent formulare = new TreeParent("Sterbeurkunde Formulare");
+      return null;
 
-		TreeObject decedeNodeForm = new TreeObject("Anlage zum Sterbefall");
-		TreeObject bestatterAuftragForm = new TreeObject("Bestattungsauftrag");
-		TreeObject standesamtForm = new TreeObject("Standesamt Formular");
-		TreeObject databaseRows = new TreeObject("Daten Bestand");
-		//TreeObject personNode = new TreeObject("Personendaten Erfassen");
-		TreeParent pesonen = new TreeParent("Personen Daten");
-		//pesonen.addChild(personNode);
+    }
+  }
 
-		formulare.addChild(databaseRows);
-		formulare.addChild(decedeNodeForm);
-		formulare.addChild(bestatterAuftragForm);
-		formulare.addChild(standesamtForm);
-		formulare.addChild(pesonen);
+  /**
+   * We will set up a dummy model to initialize tree heararchy. In real code,
+   * you will connect to a real model and expose its hierarchy.
+   */
+  private TreeObject createDummyModel() {
 
-		TreeParent offices = new TreeParent("Behörden");
+    // TreeParent formulare = new TreeParent("Sterbeurkunde Formulare");
 
-		TreeObject K = new TreeObject("Krankenhaus");
-		TreeObject P = new TreeObject("Polizei");
-		TreeObject S = new TreeObject("Sozialamt");
-		TreeObject F = new TreeObject("Friedhöfe");
+    TreeObject decedeNodeForm = new TreeObject("Anlage zum Sterbefall");
+    TreeObject bestatterAuftragForm = new TreeObject("Bestattungsauftrag");
+    TreeObject standesamtForm = new TreeObject("Standesamt Formular");
+    TreeParent project = new TreeParent("Auftrag");
+    TreeObject projectNew = new TreeParent("Auftrag anlegen");
+    project.addChild(projectNew);
+    // TreeObject personNode = new TreeObject("Personendaten Erfassen");
+    TreeParent personen = new TreeParent("Personen");
+    TreeObject personenNew = new TreeParent("Person anlegen");
+    personen.addChild(personenNew);
 
-		offices.addChild(K);
-		offices.addChild(P);
-		offices.addChild(S);
-		offices.addChild(F);
+    // pesonen.addChild(personNode);
 
-		TreeParent additionalFeatues = new TreeParent("Geplannte Features");
-		TreeObject behoerdenFormulareImportieren = new TreeObject("BehördenFormulareImportieren");
-		additionalFeatues.addChild(behoerdenFormulareImportieren);
+    // formulare.addChild(databaseRows);
+    // formulare.addChild(decedeNodeForm);
+    // formulare.addChild(bestatterAuftragForm);
+    // formulare.addChild(standesamtForm);
+    // formulare.addChild(pesonen);
 
-		TreeParent root = new TreeParent("");
-		root.addChild(formulare);
-		root.addChild(offices);
-		root.addChild(additionalFeatues);
-		return root;
-	}
+    TreeParent offices = new TreeParent("Behörden");
 
-	/**
-	 * This is a callback that will allow us to create the viewer and initialize
-	 * it.
-	 */
-	public void createPartControl(Composite parent) {
-		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		
-		viewer.setContentProvider(new ViewContentProvider());
-		viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setInput(createDummyModel());
+    TreeObject K = new TreeObject("Krankenhaus");
+    TreeObject P = new TreeObject("Polizei");
+    TreeObject S = new TreeObject("Sozialamt");
+    TreeObject F = new TreeObject("Friedhöfe");
 
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
+    offices.addChild(K);
+    offices.addChild(P);
+    offices.addChild(S);
+    offices.addChild(F);
 
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
-				TreeObject treeObject = (TreeObject) selection.getFirstElement();
-				if (treeObject.getParent() != null && treeObject.getName().equals("Personen Daten")) {
-					IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
-					String commandID = PersonEditorHandler.ID;
-					try {
-						handlerService.executeCommand(commandID, null);
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				} else if (treeObject.getParent() != null && treeObject.getName().equals("Bestattungsauftrag")) {
-					IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
-					String commandID = BestatterAuftragHandler.id;
-					try {
-						handlerService.executeCommand(commandID, null);
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-					
-				
-				}
-				else if (treeObject.getParent() != null && treeObject.getName().equals("Daten Bestand")) {
-					IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
-					String commandID = DataLoaderHandler.id;
-					try {
-						handlerService.executeCommand(commandID, null);
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
+    TreeParent additionalFeatues = new TreeParent("Geplannte Features");
+    TreeObject behoerdenFormulareImportieren = new TreeObject("BehördenFormulareImportieren");
+    additionalFeatues.addChild(behoerdenFormulareImportieren);
 
-				else {
-					IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
-					String commandID = CallEditor.id;
-					try {
-						handlerService.executeCommand(commandID, null);
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
+    TreeParent root = new TreeParent("");
+    // root.addChild(formulare);
+    root.addChild(project);
+    root.addChild(personen);
+    root.addChild(offices);
+    root.addChild(additionalFeatues);
+    return root;
+  }
 
-			}
-		});
-		
-		viewer.expandAll();
-	}
+  /**
+   * This is a callback that will allow us to create the viewer and initialize
+   * it.
+   */
+  public void createPartControl(Composite parent) {
+    viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
-	public void setFocus() {
-		viewer.getControl().setFocus();
-	}
+    viewer.setContentProvider(new ViewContentProvider());
+    viewer.setLabelProvider(new ViewLabelProvider());
+    viewer.setInput(createDummyModel());
+
+    viewer.addDoubleClickListener(new IDoubleClickListener() {
+
+      @Override
+      public void doubleClick(DoubleClickEvent event) {
+        IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+        TreeObject treeObject = (TreeObject) selection.getFirstElement();
+        if (treeObject.getParent() != null && treeObject.getName().equals("Personen Daten")) {
+          IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
+          String commandID = PersonEditorHandler.ID;
+          try {
+            handlerService.executeCommand(commandID, null);
+          } catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        } else if (treeObject.getParent() != null && treeObject.getName().equals("Bestattungsauftrag")) {
+          IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
+          String commandID = BestatterAuftragHandler.id;
+          try {
+            handlerService.executeCommand(commandID, null);
+          } catch (Exception ex) {
+            ex.printStackTrace();
+          }
+
+        } else if (treeObject.getParent() != null && treeObject.getName().equals("Daten Bestand")) {
+          IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
+          String commandID = DataLoaderHandler.id;
+          try {
+            handlerService.executeCommand(commandID, null);
+          } catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        }
+
+        else {
+          IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
+          String commandID = CallEditor.id;
+          try {
+            handlerService.executeCommand(commandID, null);
+          } catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        }
+
+      }
+    });
+
+    viewer.expandAll();
+  }
+
+  /**
+   * Passing the focus request to the viewer's control.
+   */
+  public void setFocus() {
+    viewer.getControl().setFocus();
+  }
 }

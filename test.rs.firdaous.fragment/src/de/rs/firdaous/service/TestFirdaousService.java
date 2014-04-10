@@ -1,6 +1,7 @@
 package de.rs.firdaous.service;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -19,12 +20,12 @@ import org.xml.sax.SAXException;
 
 import com.lowagie.text.DocumentException;
 
-import de.rs.firdaous.xml.service.IDocumentService;
-import de.rs.firdaous.xml.service.IXMLService;
-import de.rs.firdaous.xml.service.ProjectList;
-import de.rs.firdaous.xml.service.ServiceForDocument;
-import de.rs.firdaous.xml.service.XMLService;
-import de.rs.prototype.firdaous.model.WorkOrder;
+import de.rs.firdaous.xml.services.DocumentService;
+import de.rs.firdaous.xml.services.IDocumentService;
+import de.rs.firdaous.xml.services.IXMLService;
+import de.rs.firdaous.xml.services.ProjectList;
+import de.rs.firdaous.xml.services.XMLService;
+import de.rs.firdaous.model.WorkOrder;
 import de.rs.test.prototype.mail.Activator;
 
 public class TestFirdaousService {
@@ -57,7 +58,7 @@ public class TestFirdaousService {
 	
 	@Test
 	public void setField_ShowFieldValue(){
-		IDocumentService instance = ServiceForDocument.getInstance();
+		IDocumentService instance = DocumentService.getInstance();
 		try {
 			instance.setFieldToPDF(order, null);
 		} catch (IOException e) {
