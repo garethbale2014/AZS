@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Entities
+Bundle-SymbolicName: de.rs.firdaous.entities
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.rs.firdaous.entities.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: de.rs.firdaous.entities,
+ de.rs.firdaous.model
