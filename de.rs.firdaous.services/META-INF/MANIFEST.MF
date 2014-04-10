@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Services
+Bundle-SymbolicName: de.rs.firdaous.services
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.rs.firdaous.services.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ de.ralfebert.rcputils;bundle-version="2.0.2",
+ de.rs.commons.lang;bundle-version="1.0.0",
+ de.rs.itext.firdaous;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.rs.firdaous.model
+Export-Package: de.rs.auxiliary,
+ de.rs.firdaous.services,
+ de.rs.firdaous.xml.services,
+ de.rs.utils
