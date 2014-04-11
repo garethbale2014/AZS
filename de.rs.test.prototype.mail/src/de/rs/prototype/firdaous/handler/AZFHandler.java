@@ -17,6 +17,7 @@ import com.lowagie.text.DocumentException;
 
 import de.ralfebert.rcputils.selection.SelectionUtils;
 import de.ralfebert.rcputils.wired.WiredHandler;
+import de.rs.auxiliary.FormularName;
 import de.rs.firdaous.model.WorkOrder;
 import de.rs.firdaous.services.IDocumentService;
 import de.rs.utils.RSConstant;
@@ -33,7 +34,10 @@ public class AZFHandler extends WiredHandler {
     for (WorkOrder order : SelectionUtils.getIterable(selection, WorkOrder.class)) {
       log.log(LogService.LOG_INFO, "Deleting address: " + order); //$NON-NLS-1$
       try {
-        documnentService.setFieldToPDF(order);
+        FormularName f = FormularName.AZF;
+        String filename = FormularName.getValueFromName(f.name());
+        documnentService.setFieldToPDF(order, filename);
+       
       } catch (IOException e) {
         log.log(LogService.LOG_ERROR, e.getLocalizedMessage());
       } catch (ParserConfigurationException e) {

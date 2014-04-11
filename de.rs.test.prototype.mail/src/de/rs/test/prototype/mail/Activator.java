@@ -54,32 +54,32 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 		
 		//bindingContext = new DataBindingContext();
-		initData();
+		//initData();
 	}
 
-	private void initData() {
-		
-		PresentationWorkOrder order = PresentationWorkOrder.getInstance();
-	
-	try {
-		
-		ProjectList list = xmlService.loadProjectList();
-		for(WorkOrder workOrder : list.getProjectList()){
-			
-			order.getOrders().put(workOrder.projectId, workOrder);
-		}
-	} catch (IOException e) {
-		
-		e.printStackTrace();
-	} catch (JAXBException e) {
-		
-		e.printStackTrace();
-	}
-	
-		
-		
-		
-	}
+//	private void initData() {
+//		
+//		PresentationWorkOrder order = PresentationWorkOrder.getInstance();
+//	
+//	try {
+//		
+//		ProjectList list = xmlService.loadProjectList();
+//		for(WorkOrder workOrder : list.getProjectList()){
+//			
+//			order.getOrders().put(workOrder.projectId, workOrder);
+//		}
+//	} catch (IOException e) {
+//		
+//		e.printStackTrace();
+//	} catch (JAXBException e) {
+//		
+//		e.printStackTrace();
+//	}
+//	
+//		
+//		
+//		
+//	}
 
 	/*
 	 * (non-Javadoc)

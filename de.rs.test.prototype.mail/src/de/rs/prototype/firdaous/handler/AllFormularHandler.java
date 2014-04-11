@@ -18,6 +18,7 @@ import com.lowagie.text.DocumentException;
 
 import de.ralfebert.rcputils.selection.SelectionUtils;
 import de.ralfebert.rcputils.wired.WiredHandler;
+import de.rs.auxiliary.FormularName;
 import de.rs.firdaous.model.WorkOrder;
 import de.rs.firdaous.services.IDocumentService;
 
@@ -33,7 +34,12 @@ public class AllFormularHandler extends WiredHandler {
     for (WorkOrder order : SelectionUtils.getIterable(selection, WorkOrder.class)) {
       log.log(LogService.LOG_INFO, "Deleting address: " + order); //$NON-NLS-1$
       try {
-        documnentService.setFieldToPDF(order);
+        String files[] = new String[FormularName.values().length];
+         for(FormularName f : FormularName.values()){
+           String filename = FormularName.getValueFromName(f.name());
+           files[f.ordinal()] = filename;
+         }
+        documnentService.createAllForms(order, files);
       } catch (IOException e) {
         log.log(LogService.LOG_ERROR, e.getLocalizedMessage());
       } catch (ParserConfigurationException e) {

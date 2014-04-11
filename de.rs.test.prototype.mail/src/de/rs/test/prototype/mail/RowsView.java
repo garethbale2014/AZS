@@ -3,6 +3,7 @@ package de.rs.test.prototype.mail;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observer;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.list.WritableList;
@@ -10,6 +11,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.swt.SWT;
@@ -22,6 +24,7 @@ import org.eclipse.ui.handlers.IHandlerService;
 import de.ralfebert.rcputils.concurrent.UIProcess;
 import de.ralfebert.rcputils.menus.ContextMenu;
 import de.ralfebert.rcputils.wired.WiredViewPart;
+import de.rs.firdaous.model.PresentationWorkOrder;
 import de.rs.firdaous.model.WorkOrder;
 import de.rs.firdaous.services.IAddressChangeListener;
 import de.rs.firdaous.services.IDocumentService;
@@ -53,10 +56,12 @@ public class RowsView extends WiredViewPart {
     }
 
   };
+  
+  private TableViewObservable tableViewerObservable;
 	
 	public class LoadAddressesJob extends UIProcess {
 
-  private List<WorkOrder> addresses;
+  private List<WorkOrder> orders;
   
   
 
@@ -68,13 +73,15 @@ public class RowsView extends WiredViewPart {
 
     @Override
     protected void runInBackground(IProgressMonitor monitor) {
-      addresses = (addressService != null) ? addressService.getAllWorkOrder() : Collections.<WorkOrder> emptyList();
+      orders = (addressService != null) ? addressService.getAllWorkOrder() : Collections.<WorkOrder> emptyList();
     }
 
     @Override
     protected void runInUIThread() {
       if (tableViewer != null && !tableViewer.getTable().isDisposed()) {
-        tableViewer.setInput(addresses);
+        
+        tableViewer.setInput(orders);
+        PresentationWorkOrder.getInstance().addOrders(orders);
         // WORKAROUND: Unnecessary horizontal scrollbar
         // See https://bugs.eclipse.org/bugs/show_bug.cgi?id=304128
         tableViewer.getTable().getParent().layout();
@@ -88,25 +95,13 @@ public class RowsView extends WiredViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
+	  
+	  tableViewerObservable = new TableViewObservable();
+	  tableViewerObservable.createTableViewer(parent);
+	  PresentationWorkOrder.getInstance().addObserver(tableViewerObservable);
 
-		tableViewer = new TableViewer(parent, SWT.VIRTUAL | SWT.FULL_SELECTION | SWT.MULTI);
-		//bindingContext = Activator.getDefault().getBindingContext();
-		for (String headerText : ColumnConstants.RowViewerColumns) {
-			ColumnCreator.createColumn(tableViewer, headerText);
-		}
-
-		tableViewer.getTable().setHeaderVisible(true);
-
-		List<WorkOrder> ordersList = new ArrayList<WorkOrder>();
-//		for (Entry<Long, WorkOrder> entry : PresentationWorkOrder.getInstance().getOrders().entrySet()) {
-//			ordersList.add(entry.getValue());
-//		}
-		
-		//"Nationalität", "Adresse", "Adresse"
-		
-		//input = new WritableList(ordersList, Address.class);
-		tableViewer.setContentProvider(new ArrayContentProvider());
-		//tableViewer.setInput();
+		tableViewer = tableViewerObservable.getTableViewer();
+		//tableViewerObservable.addSelectionListener();
 		new LoadAddressesJob(tableViewer.getTable().getDisplay()).schedule();
 		
 //		ViewerSupport.bind(tableViewer, input,
@@ -119,7 +114,7 @@ public class RowsView extends WiredViewPart {
 		
 		getSite().setSelectionProvider(tableViewer);
 		hookDoubleClickCommand();
-		BrowserComponent.getInstance().setRowView(this);
+		//BrowserComponent.getInstance().setRowView(this);
 		
 		ContextMenu menu = new ContextMenu(tableViewer, getSite());
 		menu.setDefaultItemHandling(true);
@@ -135,6 +130,9 @@ public class RowsView extends WiredViewPart {
 				IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
 				try {
 					handlerService.executeCommand(commandID, null);
+					;
+					//WorkOrder obj = (WorkOrder)((IStructuredSelection) event.getSelection()).getFirstElement();
+					//tableViewerObservable.selectionChanged();
 				} catch (Exception ex) {
 					throw new RuntimeException(commandID + " not found");
 				}
@@ -201,5 +199,18 @@ public class RowsView extends WiredViewPart {
       new LoadAddressesJob(tableViewer.getTable().getDisplay()).schedule();
     }
   }
+	
+	
+	
+	public void addObserver(Observer observer){
+	  tableViewerObservable.addObserver(observer);
+	}
+
+  public void setChanged(WorkOrder order) {    
+    tableViewerObservable.selectionChanged();
+    tableViewerObservable.notifyObservers(order);
+    
+  }
+	
 
 }

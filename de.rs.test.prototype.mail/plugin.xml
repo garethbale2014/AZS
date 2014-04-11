@@ -300,12 +300,6 @@
                icon="icons/standesamt_form_red_16_16.bmp">
          </command>
          <command
-               commandId="standesamtformular"
-               id="de.rs.firdaous.standesamtformular"
-               style="push"
-               icon="icons/standesamt_form_red_16_16.bmp">
-         </command>
-         <command
                commandId="alleAuftragFormulare"
                id="de.rs.firdaous.alleAuftragFormulare"
                style="push"
@@ -366,7 +360,7 @@
    <extension
          point="org.eclipse.ui.handlers">
          <handler
-            class="de.rs.prototype.firdaous.handler.AddressDeleteHandler"
+            class="de.rs.prototype.firdaous.handler.EntryCreateHandler"
             commandId="auftraganlegen">
          <activeWhen>
             <with
@@ -398,7 +392,7 @@
          </activeWhen>
       </handler>
          <handler
-            class="de.rs.prototype.firdaous.handler.AddressDeleteHandler"
+            class="de.rs.prototype.firdaous.handler.RemoveOrderHandler"
             commandId="auftraglöschen">
          <activeWhen>
             <with

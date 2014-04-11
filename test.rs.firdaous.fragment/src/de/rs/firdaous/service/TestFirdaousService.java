@@ -20,8 +20,9 @@ import org.xml.sax.SAXException;
 
 import com.lowagie.text.DocumentException;
 
-import de.rs.firdaous.xml.services.DocumentService;
-import de.rs.firdaous.xml.services.IDocumentService;
+
+import de.rs.firdaous.services.DocumentService;
+import de.rs.firdaous.services.IDocumentService;
 import de.rs.firdaous.xml.services.IXMLService;
 import de.rs.firdaous.xml.services.ProjectList;
 import de.rs.firdaous.xml.services.XMLService;

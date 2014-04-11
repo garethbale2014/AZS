@@ -38,9 +38,6 @@ public class BrowserComponent {
 		bindingContext.bindValue(phoneBookDetailPersonObserveValue, m_personViewerSelectionObserveSelection, new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER), null);
 		
 		IObservableValue phoneBookDetailAntragObserveValue = BeansObservables.observeValue(editor.getEntryComposition(), "order");
-		//IObservableValue m_personViewerSelectionObserveSelection = ViewersObservables.observeSingleSelection(rowView.getTableViewer());
-		
-		//DataBindingContext bindingContext = new DataBindingContext();
 		bindingContext.bindValue(phoneBookDetailPersonObserveValue, m_personViewerSelectionObserveSelection, new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER), null);
 		bindingContext.bindValue(phoneBookDetailAntragObserveValue, m_personViewerSelectionObserveSelection, new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER), null);
 	}

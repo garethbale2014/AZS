@@ -16,7 +16,7 @@ import de.rs.firdaous.services.IWorkOrderService;
 /**
  * Handler to delete selected addresses.
  */
-public class AddressDeleteHandler extends WiredHandler {
+public class RemoveOrderHandler extends WiredHandler {
 
   private IWorkOrderService workOrderService;
   
@@ -25,7 +25,7 @@ public class AddressDeleteHandler extends WiredHandler {
   public Object execute(ExecutionEvent event) throws ExecutionException {
     ISelection selection = HandlerUtil.getCurrentSelection(event);
     for (WorkOrder order : SelectionUtils.getIterable(selection, WorkOrder.class)) {
-      log.log(LogService.LOG_INFO, "Deleting address: " + order); //$NON-NLS-1$
+      log.log(LogService.LOG_INFO, "Removing address: " + order); //$NON-NLS-1$
       PresentationWorkOrder.getInstance().removeOrder(order);
       //workOrderService.deleteWorkOrder(order.getProjectId());
     }
