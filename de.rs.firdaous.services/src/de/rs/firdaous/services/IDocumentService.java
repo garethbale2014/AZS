@@ -28,5 +28,7 @@ public interface IDocumentService {
 	
 	public Map<String, AcroFields.Item>  getPDFFieldMap(String file) throws IOException, ParserConfigurationException, SAXException, DocumentException;
 	
-	public void setFieldToPDF(WorkOrder order) throws IOException, ParserConfigurationException, SAXException, DocumentException;
+	
+
+  public void createAllForms(WorkOrder order, String[] files) throws IOException, ParserConfigurationException, SAXException, DocumentException;
 }

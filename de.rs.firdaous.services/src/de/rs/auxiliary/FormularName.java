@@ -10,9 +10,9 @@ package de.rs.auxiliary;
 public enum FormularName {
 
   AZF("resources/AZSUnlocked.pdf", "AZS_%s.pdf" ),
-  BAL("resources/BALUnlocked.pdf","BAL_%s.pdf"),
-  LVN("", ""),
-  SF("", "");
+  BAL("resources/BALUnlocked.pdf","BAL_%s.pdf");
+//  LVN("", ""),
+//  SF("", "");
 
   private String fileName;
   
